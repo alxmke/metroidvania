@@ -1,8 +1,11 @@
 extends KinematicBody2D
 
-export var ACCELERATION: float = 20
-export var SPEED: float = 100
-export var FRICTION: float = 20
+export var ACCELERATION: float = 512
+export var SPEED: float = 64
+export var FRICTION: float = 512
+export var GRAVITY: float = 300
+export var JUMP_FORCE: float = 128
+export var MAX_SLOPE_ANGLE = 46
 
 var motion = Vector2.ZERO
 
@@ -10,15 +13,26 @@ var motion = Vector2.ZERO
 func _ready(): pass
 
 func _physics_process(delta):
-	var input_vector: Vector2
-	input_vector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
-	input_vector.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
-	input_vector = input_vector.normalized()
+	var x: float = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+	var on_floor: bool = is_on_floor()
 	
-	if input_vector != Vector2.ZERO:
-		motion = motion.move_toward(input_vector * SPEED, ACCELERATION)
+	if x != 0 and on_floor:
+		motion.x = move_toward(motion.x, x * SPEED, ACCELERATION * delta)
+	elif on_floor:
+		motion.x = move_toward(motion.x, 0, FRICTION * delta)
+	elif x != 0:
+		motion.x = move_toward(motion.x, x * SPEED, ACCELERATION/10 * delta)
+	
+	if on_floor and Input.is_action_just_pressed("ui_up"):
+		motion.y = -JUMP_FORCE
+	elif Input.is_action_just_released("ui_up") and motion.y < -JUMP_FORCE/2:
+		motion.y = -JUMP_FORCE/2
 	else:
-		motion = motion.move_toward(input_vector, FRICTION)
-	motion = move_and_slide(motion)
+		motion.y += GRAVITY * delta
+	
+	motion = move_and_slide(motion, Vector2.UP)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta): pass
+# func _process(delta): pass
+ 
+ 
