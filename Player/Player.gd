@@ -9,6 +9,9 @@ export var MAX_SLOPE_ANGLE = 46
 
 var motion = Vector2.ZERO
 
+onready var sprite = $Sprite
+onready var animation_player = $AnimationPlayer
+
 # Called when the node enters the scene tree for the first time.
 func _ready(): pass
 
@@ -30,9 +33,18 @@ func _physics_process(delta):
 	else:
 		motion.y += GRAVITY * delta
 	
+	animate(x)
 	motion = move_and_slide(motion, Vector2.UP)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # func _process(delta): pass
- 
- 
+
+func animate(x):
+	if x:
+		sprite.scale.x = sign(x)
+		animation_player.play("run")
+	else:
+		animation_player.play("idle")
+	
+	if not is_on_floor():
+		animation_player.play("jump")
