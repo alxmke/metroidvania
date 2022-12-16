@@ -90,3 +90,7 @@ anims/RESET = SubResource( 2 )
 anims/idle = SubResource( 3 )
 anims/jump = SubResource( 4 )
 anims/run = SubResource( 5 )
+
+[node name="RemoteCamera" type="RemoteTransform2D" parent="."]
+update_rotation = false
+update_scale = false
