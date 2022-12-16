@@ -18,25 +18,27 @@ func _ready(): pass
 
 func _physics_process(delta):
 	var x: float = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+	apply_lateral_force(delta, x)
+	jump(delta)
+	animate(x)
+	motion = move_and_slide(motion, Vector2.UP)
+	
+func jump(delta):
+	if is_on_floor() and Input.is_action_just_pressed("ui_up"):
+		motion.y = JUMP_FORCE
+	elif motion.y < SMALL_JUMP and not Input.is_action_pressed("ui_up"):
+		motion.y = SMALL_JUMP
+	else:
+		motion.y += GRAVITY * delta
 
-	var on_floor: bool = is_on_floor()
-	if on_floor:
+func apply_lateral_force(delta, x):
+	if is_on_floor():
 		if x:
 			motion.x = move_toward(motion.x, x * SPEED, ACCELERATION * delta)
 		else:
 			motion.x = move_toward(motion.x, 0, FRICTION * delta)
 	elif x:
 		motion.x = move_toward(motion.x, x * SPEED, ACCELERATION * 0.1 * delta)
-	
-	if on_floor and Input.is_action_just_pressed("ui_up"):
-		motion.y = JUMP_FORCE
-	elif motion.y < SMALL_JUMP and not Input.is_action_pressed("ui_up"):
-		motion.y = SMALL_JUMP
-	else:
-		motion.y += GRAVITY * delta
-	
-	animate(x)
-	motion = move_and_slide(motion, Vector2.UP)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # func _process(delta): pass
