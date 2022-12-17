@@ -6,9 +6,10 @@ export var FRICTION: float = 512
 export var GRAVITY: float = 300
 export var JUMP_FORCE: float = -128
 export var SMALL_JUMP: float = JUMP_FORCE * 0.5
-export var MAX_SLOPE_ANGLE = 46
+export var MAX_SLOPE_ANGLE: float = deg2rad(46)
 
 var motion = Vector2.ZERO
+var snap_vector = Vector2.DOWN
 
 onready var sprite = $Sprite
 onready var animation_player = $AnimationPlayer
@@ -18,15 +19,26 @@ func _ready(): pass
 
 func _physics_process(delta):
 	var x: float = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+	snap_vector = Vector2.DOWN
 	apply_lateral_force(delta, x)
 	jump(delta)
 	animate(x)
-	motion = move_and_slide(motion, Vector2.UP)
+	motion = move_and_slide_with_snap(
+		motion, # linear_velocity
+		snap_vector * 4, # snap
+		Vector2.UP, # up_direction: Vector2 = Vector2( 0, 0 ),
+		true, # stop_on_slope: bool = false,
+		4, # max_slides: int = 4,
+		MAX_SLOPE_ANGLE # floor_max_angle: float = 0.785398,
+		# infinite_inertia: bool = true)
+	)
+
 	
 func jump(delta):
-	if is_on_floor() and Input.is_action_just_pressed("ui_up"):
+	if Input.is_action_just_pressed("ui_up") and is_on_floor():
+		snap_vector = Vector2.ZERO
 		motion.y = JUMP_FORCE
-	elif motion.y < SMALL_JUMP and not Input.is_action_pressed("ui_up"):
+	elif Input.is_action_just_released("ui_up") and motion.y < SMALL_JUMP:
 		motion.y = SMALL_JUMP
 	else:
 		motion.y += GRAVITY * delta

@@ -44,4 +44,9 @@ current = true
 smoothing_enabled = true
 smoothing_speed = 15.0
 
+[node name="Area2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PoolVector2Array( -64, 112, -48, 208, -48, 240, 0, 240, 32, 208, 64, 208, 64, 240, 80, 224, 96, 224, 128, 192, 160, 192, 160, 112, 176, 112, 176, 240, 144, 256, -80, 256, -80, 112 )
+
 [editable path="Player"]
