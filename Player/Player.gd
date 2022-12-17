@@ -20,9 +20,12 @@ func _ready(): pass
 func _physics_process(delta):
 	var x: float = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	snap_vector = Vector2.DOWN
-	apply_lateral_force(delta, x)
+	apply_horizontal_force(delta, x)
 	jump(delta)
 	animate(x)
+	move()
+
+func move():
 	motion = move_and_slide_with_snap(
 		motion, # linear_velocity
 		snap_vector * 4, # snap
@@ -33,7 +36,7 @@ func _physics_process(delta):
 		# infinite_inertia: bool = true)
 	)
 
-	
+# applies gravity or jump force
 func jump(delta):
 	if Input.is_action_just_pressed("ui_up") and is_on_floor():
 		snap_vector = Vector2.ZERO
@@ -43,7 +46,7 @@ func jump(delta):
 	else:
 		motion.y += GRAVITY * delta
 
-func apply_lateral_force(delta, x):
+func apply_horizontal_force(delta, x):
 	if is_on_floor():
 		if x:
 			motion.x = move_toward(motion.x, x * SPEED, ACCELERATION * delta)
