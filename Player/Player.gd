@@ -4,7 +4,7 @@ export var ACCELERATION: float = 512
 export var SPEED: float = 64
 export var FRICTION: float = 512
 export var GRAVITY: float = 300
-export var JUMP_FORCE: float = -128
+export var JUMP_FORCE: float = -150
 export var SMALL_JUMP: float = JUMP_FORCE * 0.5
 export var MAX_SLOPE_ANGLE: float = deg2rad(46)
 
