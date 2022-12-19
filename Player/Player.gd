@@ -8,6 +8,8 @@ export var JUMP_FORCE: float = -150
 export var SMALL_JUMP: float = JUMP_FORCE * 0.5
 export var MAX_SLOPE_ANGLE: float = deg2rad(46)
 
+const DustEffect = preload("res://Effects/DustEffect.tscn")
+
 var motion: Vector2 = Vector2.ZERO
 var snap_vector: Vector2 = Vector2.DOWN
 var can_coyote_jump: bool = false
@@ -39,6 +41,11 @@ func move():
 		# infinite_inertia: bool = true)
 	)
 	
+	# just landed
+	if not was_on_floor and is_on_floor():
+		create_dust_effect()
+
+	# just left ground	
 	if was_on_floor and not is_on_floor():
 		can_coyote_jump = true
 		coyote_jump.start()
@@ -63,6 +70,14 @@ func apply_horizontal_force(delta, x):
 	elif x:
 		motion.x = move_toward(motion.x, x * SPEED, ACCELERATION * 0.1 * delta)
 
+func create_dust_effect():
+	var dust_position = global_position
+	dust_position.x += rand_range(-4, 4)
+	var dust_effect = DustEffect.instance()
+	dust_effect.global_position = dust_position
+	var world = get_tree().current_scene
+	world.add_child(dust_effect)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # func _process(delta): pass
 
@@ -75,7 +90,6 @@ func animate(x):
 	
 	if not is_on_floor():
 		animation_player.play("jump")
-
 
 func _on_CoyoteJump_timeout():
 	can_coyote_jump = false
