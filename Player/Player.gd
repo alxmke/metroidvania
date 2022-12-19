@@ -82,11 +82,14 @@ func create_dust_effect():
 # func _process(delta): pass
 
 func animate(x):
+	var facing = sign(get_local_mouse_position().x)
+	sprite.scale.x = facing
 	if x:
-		sprite.scale.x = sign(x)
 		animation_player.play("run")
+		animation_player.playback_speed = sign(x)*facing
 	else:
 		animation_player.play("idle")
+		animation_player.playback_speed = 1
 	
 	if not is_on_floor():
 		animation_player.play("jump")
