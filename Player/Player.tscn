@@ -94,3 +94,9 @@ anims/run = SubResource( 5 )
 [node name="RemoteCamera" type="RemoteTransform2D" parent="."]
 update_rotation = false
 update_scale = false
+
+[node name="CoyoteJump" type="Timer" parent="."]
+wait_time = 0.15
+one_shot = true
+
+[connection signal="timeout" from="CoyoteJump" to="." method="_on_CoyoteJump_timeout"]
