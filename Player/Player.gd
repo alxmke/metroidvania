@@ -7,8 +7,10 @@ export var GRAVITY: float = 300
 export var JUMP_FORCE: float = -150
 export var SMALL_JUMP: float = JUMP_FORCE * 0.5
 export var MAX_SLOPE_ANGLE: float = deg2rad(46)
+export var BULLET_SPEED: float = 250
 
 const DustEffect = preload("res://Effects/DustEffect.tscn")
+const PlayerBullet = preload("res://Player/PlayerBullet.tscn")
 
 var motion: Vector2 = Vector2.ZERO
 var snap_vector: Vector2 = Vector2.DOWN
@@ -17,6 +19,8 @@ var can_coyote_jump: bool = false
 onready var sprite = $Sprite
 onready var animation_player = $AnimationPlayer
 onready var coyote_jump = $CoyoteJump
+onready var gun = $Sprite/PlayerGun
+onready var muzzle = $Sprite/PlayerGun/Muzzle
 
 # Called when the node enters the scene tree for the first time.
 func _ready(): pass
@@ -28,6 +32,14 @@ func _physics_process(delta):
 	jump(delta)
 	animate(x)
 	move()
+	fire_gun()
+	
+func fire_gun():
+	if Input.is_action_just_pressed("fire"):	
+		var bullet = Utils.instance_scene_in_world(PlayerBullet, muzzle.global_position)
+		bullet.velocity = Vector2.RIGHT.rotated(gun.rotation) * BULLET_SPEED
+		bullet.velocity.x *= sprite.scale.x # multiply by sign of direction to orient horizontally
+		bullet.rotation = bullet.velocity.angle()
 
 func move():
 	var was_on_floor: bool = is_on_floor()
@@ -73,10 +85,7 @@ func apply_horizontal_force(delta, x):
 func create_dust_effect():
 	var dust_position = global_position
 	dust_position.x += rand_range(-4, 4)
-	var dust_effect = DustEffect.instance()
-	dust_effect.global_position = dust_position
-	var world = get_tree().current_scene
-	world.add_child(dust_effect)
+	Utils.instance_scene_in_world(DustEffect, dust_position)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # func _process(delta): pass
