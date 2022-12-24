@@ -13,5 +13,5 @@ func _physics_process(delta):
 # func _process(delta): pass
 
 
-func _on_VisibilityNotifier2D_viewport_exited(viewport):
-	pass # Replace with function body.
+func _on_VisibilityNotifier2D_viewport_exited(_viewport):
+	queue_free()

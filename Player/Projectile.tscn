@@ -30,4 +30,4 @@ rect = Rect2( -4, -4, 8, 8 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Fire = SubResource( 1 )
 
-[connection signal="viewport_exited" from="VisibilityNotifier2D" to="." method="queue_free"]
+[connection signal="viewport_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_viewport_exited"]
