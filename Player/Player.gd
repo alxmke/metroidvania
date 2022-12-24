@@ -8,6 +8,7 @@ export var JUMP_FORCE: float = -150
 export var SMALL_JUMP: float = JUMP_FORCE * 0.5
 export var MAX_SLOPE_ANGLE: float = deg2rad(46)
 export var BULLET_SPEED: float = 250
+export var FIRE_RATE: float = 0.25
 
 const DustEffect = preload("res://Effects/DustEffect.tscn")
 const PlayerBullet = preload("res://Player/PlayerBullet.tscn")
@@ -15,12 +16,14 @@ const PlayerBullet = preload("res://Player/PlayerBullet.tscn")
 var motion: Vector2 = Vector2.ZERO
 var snap_vector: Vector2 = Vector2.DOWN
 var can_coyote_jump: bool = false
+var can_fire_gun: bool = true
 
 onready var sprite = $Sprite
 onready var animation_player = $AnimationPlayer
 onready var coyote_jump = $CoyoteJump
 onready var gun = $Sprite/PlayerGun
 onready var muzzle = $Sprite/PlayerGun/Muzzle
+onready var gun_timer = $GunTimer
 
 # Called when the node enters the scene tree for the first time.
 func _ready(): pass
@@ -35,11 +38,13 @@ func _physics_process(delta):
 	fire_gun()
 	
 func fire_gun():
-	if Input.is_action_just_pressed("fire"):	
+	if Input.is_action_pressed("fire") and can_fire_gun:
 		var bullet = Utils.instance_scene_in_world(PlayerBullet, muzzle.global_position)
 		bullet.velocity = Vector2.RIGHT.rotated(gun.rotation) * BULLET_SPEED
 		bullet.velocity.x *= sprite.scale.x # multiply by sign of direction to orient horizontally
 		bullet.rotation = bullet.velocity.angle()
+		can_fire_gun = false
+		gun_timer.start(FIRE_RATE)
 
 func move():
 	var was_on_floor: bool = is_on_floor()
@@ -105,3 +110,7 @@ func animate(x):
 
 func _on_CoyoteJump_timeout():
 	can_coyote_jump = false
+
+
+func _on_GunTimer_timeout():
+	can_fire_gun = true
