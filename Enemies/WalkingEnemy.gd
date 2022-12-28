@@ -20,7 +20,6 @@ func _ready():
 	state = WALKING_DIRECTION
 
 func _physics_process(_delta):
-	print(not floor_right.is_colliding(), wall_right.is_colliding(), not floor_left.is_colliding(), wall_left.is_colliding())
 	match state:
 		DIRECTION.RIGHT:
 			motion.x = BASE_SPEED
