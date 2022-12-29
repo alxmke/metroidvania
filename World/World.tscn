@@ -33,7 +33,4 @@ tile_data = PoolIntArray( -131092, 0, 131074, -131091, 0, 131075, -131090, 0, 13
 [node name="WalkingEnemy" parent="Enemies" instance=ExtResource( 5 )]
 position = Vector2( 102, 160 )
 
-[node name="WalkingEnemy2" parent="Enemies" instance=ExtResource( 5 )]
-position = Vector2( 506, 224 )
-
 [editable path="Player"]
