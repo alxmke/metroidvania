@@ -34,3 +34,6 @@ func _physics_process(_delta):
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # func _process(delta): pass
+
+func _on_Hurtbox_got_hurt(_damage):
+	queue_free()
