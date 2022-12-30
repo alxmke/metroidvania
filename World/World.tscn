@@ -11,7 +11,6 @@ script = ExtResource( 3 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 16, 160 )
-collision_layer = 2
 
 [node name="RemoteCamera" parent="Player" index="3"]
 remote_path = NodePath("../../Camera2D")

@@ -14,7 +14,6 @@ height = 4.0
 
 [node name="WalkingEnemy" instance=ExtResource( 2 )]
 script = ExtResource( 3 )
-WALKING_DIRECTION = 1
 
 [node name="Sprite" parent="." index="0"]
 position = Vector2( 0, -9 )

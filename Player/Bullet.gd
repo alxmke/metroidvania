@@ -2,7 +2,7 @@ extends Node2D
 
 var velocity: Vector2 = Vector2.ZERO
 
-# Called when the node enters the scene tree for the first time.
+# Called when the node enters the scene tree for the first timeS.
 func _ready():
 	pass
 
