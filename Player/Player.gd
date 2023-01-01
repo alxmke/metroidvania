@@ -11,6 +11,7 @@ export var BULLET_SPEED: float = 250
 export var FIRE_RATE: float = 0.25
 
 const DustEffect = preload("res://Effects/DustEffect.tscn")
+const JumpEffect = preload("res://Effects/JumpEffect.tscn")
 const PlayerBullet = preload("res://Player/PlayerBullet.tscn")
 
 var motion: Vector2 = Vector2.ZERO
@@ -60,7 +61,7 @@ func move():
 	
 	# just landed
 	if not was_on_floor and is_on_floor():
-		create_dust_effect()
+		jump_effect()
 
 	# just left ground	
 	if was_on_floor and not is_on_floor():
@@ -73,10 +74,14 @@ func jump(delta):
 		snap_vector = Vector2.ZERO
 		motion.y = JUMP_FORCE
 		can_coyote_jump = false
+		jump_effect()
 	elif Input.is_action_just_released("ui_up") and motion.y < SMALL_JUMP:
 		motion.y = SMALL_JUMP
 	else:
 		motion.y += GRAVITY * delta
+
+func jump_effect():
+	Utils.instance_scene_in_world(JumpEffect, global_position)
 
 func apply_horizontal_force(delta, x):
 	if is_on_floor():
