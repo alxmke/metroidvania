@@ -9,3 +9,7 @@ func _ready(): pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # func _process(delta): pass
+
+
+func _on_Hurtbox_got_hurt(damage):
+	queue_free()
