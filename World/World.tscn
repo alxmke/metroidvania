@@ -15,6 +15,10 @@ position = Vector2( 16, 160 )
 [node name="RemoteCamera" parent="Player" index="3"]
 remote_path = NodePath("../../Camera2D")
 
+[node name="Hurtbox" parent="Player" index="6"]
+collision_layer = 4
+collision_mask = 0
+
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 16, 160 )
 current = true
@@ -33,3 +37,4 @@ tile_data = PoolIntArray( -131092, 0, 131074, -131091, 0, 131075, -131090, 0, 13
 position = Vector2( 102, 160 )
 
 [editable path="Player"]
+[editable path="Player/Hurtbox"]

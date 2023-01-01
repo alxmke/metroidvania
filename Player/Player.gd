@@ -116,6 +116,8 @@ func animate(x):
 func _on_CoyoteJump_timeout():
 	can_coyote_jump = false
 
-
 func _on_GunTimer_timeout():
 	can_fire_gun = true
+
+func _on_Hurtbox_got_hurt(_damage):
+	queue_free()
