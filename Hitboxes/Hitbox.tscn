@@ -8,3 +8,10 @@ collision_mask = 0
 script = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+disabled = true
+
+[node name="Cooldown" type="Timer" parent="."]
+
+[connection signal="cant_hit" from="." to="." method="_on_Hitbox_cant_hit"]
+[connection signal="hit" from="." to="." method="_on_Hitbox_hit"]
+[connection signal="timeout" from="Cooldown" to="." method="_on_Cooldown_timeout"]
