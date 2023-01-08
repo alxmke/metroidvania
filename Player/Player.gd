@@ -13,6 +13,7 @@ export var FIRE_RATE: float = 0.25
 const DustEffect = preload("res://Effects/DustEffect.tscn")
 const JumpEffect = preload("res://Effects/JumpEffect.tscn")
 const PlayerBullet = preload("res://Player/PlayerBullet.tscn")
+var PlayerStats = ResourceLoader.PlayerStats
 
 var motion: Vector2 = Vector2.ZERO
 var snap_vector: Vector2 = Vector2.DOWN
@@ -27,7 +28,8 @@ onready var muzzle = $Sprite/PlayerGun/Muzzle
 onready var gun_timer = $GunTimer
 
 # Called when the node enters the scene tree for the first time.
-func _ready(): pass
+func _ready():
+	PlayerStats.connect("player_died", self, "_on_died")
 
 func _physics_process(delta):
 	var x: float = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
@@ -119,5 +121,8 @@ func _on_CoyoteJump_timeout():
 func _on_GunTimer_timeout():
 	can_fire_gun = true
 
-func _on_Hurtbox_got_hurt(_damage):
+func _on_Hurtbox_got_hurt(damage):
+	PlayerStats.health -= damage
+
+func _on_died():
 	queue_free()
