@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://World/TileMap.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://World/World.gd" type="Script" id=3]
 [ext_resource path="res://World/MovingPlatform.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Enemies/WalkingEnemy.tscn" type="PackedScene" id=5]
+[ext_resource path="res://World/Camera2D.tscn" type="PackedScene" id=6]
 
 [node name="World" type="Node"]
 script = ExtResource( 3 )
@@ -15,11 +16,8 @@ position = Vector2( 16, 160 )
 [node name="RemoteCamera" parent="Player" index="3"]
 remote_path = NodePath("../../Camera2D")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" parent="." instance=ExtResource( 6 )]
 position = Vector2( 16, 160 )
-current = true
-smoothing_enabled = true
-smoothing_speed = 15.0
 
 [node name="MovingPlatform" parent="." instance=ExtResource( 4 )]
 position = Vector2( 80, 331 )
