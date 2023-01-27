@@ -38,3 +38,4 @@ position = Vector2( 102, 160 )
 [editable path="Enemies/WalkingEnemy"]
 [editable path="Enemies/WalkingEnemy/Hurtbox"]
 [editable path="Enemies/WalkingEnemy/Hitbox"]
+[editable path="UI"]
