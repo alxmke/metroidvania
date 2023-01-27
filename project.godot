@@ -27,7 +27,7 @@ _global_script_class_icons={
 [application]
 
 config/name="metroidvania"
-run/main_scene="res://World/World.tscn"
+run/main_scene="res://Menus/StartMenu.tscn"
 config/icon="res://icon.png"
 
 [autoload]
@@ -53,6 +53,10 @@ version_control_plugin_name="GitAPI"
 [gdnative]
 
 singletons=[ "res://addons/godot-git-plugin/git_api.gdnlib" ]
+
+[global]
+
+main=false
 
 [importer_defaults]
 
