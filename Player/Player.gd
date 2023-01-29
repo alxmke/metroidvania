@@ -18,6 +18,7 @@ var PlayerStats = ResourceLoader.PlayerStats
 var motion: Vector2 = Vector2.ZERO
 var snap_vector: Vector2 = Vector2.DOWN
 var can_coyote_jump: bool = false
+var can_double_jump: bool = true
 var can_fire_gun: bool = true
 
 onready var sprite = $Sprite
@@ -35,7 +36,7 @@ func _physics_process(delta):
 	var x: float = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	snap_vector = Vector2.DOWN
 	apply_horizontal_force(delta, x)
-	jump(delta)
+	jump(delta, 1)
 	animate(x)
 	move()
 	fire_gun()
@@ -64,6 +65,7 @@ func move():
 	# just landed
 	if not was_on_floor and is_on_floor():
 		jump_effect()
+		can_double_jump = true
 
 	# just left ground	
 	if was_on_floor and not is_on_floor():
@@ -71,16 +73,22 @@ func move():
 		coyote_jump.start()
 
 # applies gravity or jump force
-func jump(delta):
-	if Input.is_action_just_pressed("ui_up") and (is_on_floor() or can_coyote_jump):
-		snap_vector = Vector2.ZERO
-		motion.y = JUMP_FORCE
-		can_coyote_jump = false
-		jump_effect()
-	elif Input.is_action_just_released("ui_up") and motion.y < SMALL_JUMP:
+func jump(delta, scalar):
+	if Input.is_action_just_pressed("ui_up"):
+		if is_on_floor() or can_coyote_jump:
+			snap_vector = Vector2.ZERO
+			motion.y = JUMP_FORCE * scalar
+			can_coyote_jump = false
+			jump_effect()
+		elif can_double_jump:
+			snap_vector = Vector2.ZERO
+			motion.y = JUMP_FORCE * 0.75 * scalar
+			can_double_jump = false
+			jump_effect()
+	elif Input.is_action_just_released("ui_up") and motion.y < SMALL_JUMP * scalar:
 		motion.y = SMALL_JUMP
 	else:
-		motion.y += GRAVITY * delta
+		motion.y += GRAVITY * delta / scalar
 
 func jump_effect():
 	Utils.instance_scene_in_world(JumpEffect, global_position)
