@@ -41,12 +41,13 @@ func _ready():
 
 func _physics_process(delta):
 	var x: float = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+	var facing = sign(get_local_mouse_position().x)
 	match state:
 		MOVE:
-			move_state(delta, x)
+			move_state(delta, x, facing)
 		WALL_SLIDE:
 			wall_slide_state(delta)
-	animate(x)
+	animate(x, facing)
 	fire_gun()
 	
 func wall_slide_state(delta):
@@ -91,17 +92,17 @@ func check_wall_drop(delta):
 func get_wall_facing():
 	return int(test_move(transform, Vector2.LEFT)) - int(test_move(transform, Vector2.RIGHT))
 	
-func check_wall_slide():
-	if not is_on_floor() and is_on_wall():
+func check_wall_slide(facing):
+	if not is_on_floor() and is_on_wall() and facing == get_wall_facing():
 		state = WALL_SLIDE
 		can_double_jump = true
 
-func move_state(delta, x):
+func move_state(delta, x, facing):
 	snap_vector = Vector2.DOWN
 	apply_horizontal_force(delta, x)
 	jump(delta, 1)
 	move()
-	check_wall_slide()
+	check_wall_slide(facing)
 	
 func fire_gun():
 	if Input.is_action_pressed("fire") and can_fire_gun:
@@ -176,8 +177,7 @@ func create_dust_effect():
 func wall_slide_animate_sprite_flip():
 	sprite.scale.x = get_wall_facing()
 
-func animate(x):
-	var facing = sign(get_local_mouse_position().x)
+func animate(x, facing):
 	match state:
 		MOVE:
 			sprite.scale.x = facing
