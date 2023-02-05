@@ -6,7 +6,7 @@ export var FRICTION: float = 512
 export var GRAVITY: float = 300
 export var JUMP_FORCE: float = -150
 export var SMALL_JUMP: float = JUMP_FORCE * 0.5
-export var WALL_SLIDE_SPEED: float = -JUMP_FORCE
+export var WALL_SLIDE_FACTOR: float = 2
 export var MAX_SLOPE_ANGLE: float = deg2rad(46)
 export var BULLET_SPEED: float = 250
 export var FIRE_RATE: float = 0.25
@@ -54,7 +54,7 @@ func wall_slide_state(delta):
 	var wall_facing = get_wall_facing()
 	check_wall_jump(wall_facing)
 	check_wall_drop(delta)
-	check_wall_slide_down_faster(delta, WALL_SLIDE_SPEED)
+	check_wall_slide_down_faster(delta, WALL_SLIDE_FACTOR)
 	check_wall_detatch(wall_facing)
 	
 	motion = move_and_slide_with_snap(
@@ -77,11 +77,13 @@ func check_wall_jump(wall_facing):
 		motion.y = JUMP_FORCE*0.8
 		state = MOVE
 
-func check_wall_slide_down_faster(delta, max_slide_speed):
-	if Input.is_action_just_pressed("ui_down"):
-		max_slide_speed = -JUMP_FORCE
+func check_wall_slide_down_faster(delta, max_slide_factor):
+	var slide_factor = 1
+	if Input.is_action_pressed("ui_down"):
+		slide_factor = max_slide_factor
 	var friction = -GRAVITY*0.75 if sign(motion.y) == sign(GRAVITY) else GRAVITY*0.5
-	motion.y = min(motion.y + (GRAVITY + friction) * delta, max_slide_speed)
+	print(slide_factor)
+	motion.y = motion.y + (GRAVITY + friction) * delta * slide_factor
 
 func check_wall_drop(delta):
 	var x = int(Input.is_action_just_pressed("ui_left")) - int(Input.is_action_just_pressed("ui_right"))
