@@ -14,7 +14,9 @@ export var motion: Vector2 = Vector2.ZERO
 
 const DustEffect = preload("res://Effects/DustEffect.tscn")
 const JumpEffect = preload("res://Effects/JumpEffect.tscn")
+const WallDustEffect = preload("res://Effects/WallDustEffect.tscn")
 const PlayerBullet = preload("res://Player/PlayerBullet.tscn")
+
 var PlayerStats = ResourceLoader.PlayerStats
 
 var snap_vector: Vector2 = Vector2.DOWN
@@ -76,6 +78,9 @@ func check_wall_jump(wall_facing):
 		motion.x = wall_facing * SPEED
 		motion.y = JUMP_FORCE*0.8
 		state = MOVE
+		var dust_offset: Vector2 = Vector2(wall_facing*4, -4)
+		var dust = Utils.instance_scene_in_world(WallDustEffect, global_position + dust_offset)
+		dust.scale.x = wall_facing
 
 func check_wall_slide_down_faster(delta, max_slide_factor):
 	var slide_factor = 1
@@ -97,6 +102,7 @@ func check_wall_slide(facing):
 	if not is_on_floor() and is_on_wall() and facing == get_wall_facing():
 		state = WALL_SLIDE
 		can_double_jump = true
+		create_dust_effect()
 
 func move_state(delta, x, facing):
 	snap_vector = Vector2.DOWN
