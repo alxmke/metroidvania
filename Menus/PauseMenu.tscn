@@ -22,31 +22,39 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-margin_left = 143.0
-margin_top = 67.0
-margin_right = 176.0
-margin_bottom = 112.0
+margin_left = 137.0
+margin_top = 60.0
+margin_right = 182.0
+margin_bottom = 120.0
 
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
-margin_right = 33.0
+margin_right = 45.0
 margin_bottom = 15.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_offset_y = 0
 text = "Paused"
+align = 1
 
 [node name="Resume" type="Button" parent="CenterContainer/VBoxContainer"]
 margin_top = 19.0
-margin_right = 33.0
+margin_right = 45.0
 margin_bottom = 30.0
 text = "Resume"
 
-[node name="Quit" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="MainMenu" type="Button" parent="CenterContainer/VBoxContainer"]
 margin_top = 34.0
-margin_right = 33.0
+margin_right = 45.0
 margin_bottom = 45.0
-text = "Quit"
+text = "Main Menu"
+
+[node name="ExitGame" type="Button" parent="CenterContainer/VBoxContainer"]
+margin_top = 49.0
+margin_right = 45.0
+margin_bottom = 60.0
+text = "Exit Game"
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Resume" to="." method="_on_Resume_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/Quit" to="." method="_on_Quit_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/MainMenu" to="." method="_on_MainMenu_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/ExitGame" to="." method="_on_ExitGame_pressed"]

@@ -17,5 +17,10 @@ func _process(_delta):
 func _on_Resume_pressed():
 	self.paused = false
 
-func _on_Quit_pressed():
+func _on_MainMenu_pressed():
+	# warning-ignore:return_value_discarded
+	get_tree().change_scene("res://Menus/StartMenu.tscn")
+	self.paused = false
+
+func _on_ExitGame_pressed():
 	get_tree().quit()

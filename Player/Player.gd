@@ -82,7 +82,6 @@ func check_wall_slide_down_faster(delta, max_slide_factor):
 	if Input.is_action_pressed("ui_down"):
 		slide_factor = max_slide_factor
 	var friction = -GRAVITY*0.75 if sign(motion.y) == sign(GRAVITY) else GRAVITY*0.5
-	print(slide_factor)
 	motion.y = motion.y + (GRAVITY + friction) * delta * slide_factor
 
 func check_wall_drop(delta):
