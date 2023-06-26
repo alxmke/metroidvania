@@ -18,6 +18,7 @@ const WallDustEffect = preload("res://Effects/WallDustEffect.tscn")
 const PlayerBullet = preload("res://Player/PlayerBullet.tscn")
 
 var PlayerStats = ResourceLoader.PlayerStats
+var MainInstances = ResourceLoader.MainInstances
 
 var snap_vector: Vector2 = Vector2.DOWN
 var can_coyote_jump: bool = false
@@ -40,6 +41,10 @@ var state = MOVE
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	PlayerStats.connect("player_died", self, "_on_died")
+	MainInstances.player = self
+
+func _exit_tree():
+	MainInstances.player = null
 
 func _physics_process(delta):
 	var x: float = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
